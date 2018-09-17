@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@expo/vector-icons": "^6.3.1",
+    "prop-types": "^15.6.2"
+  }
+}
