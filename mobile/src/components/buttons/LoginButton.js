@@ -15,6 +15,7 @@ class LoginButton extends Component {
     const { onPress, children, type } = this.props
     return (
       <TouchableOpacity
+        onPress={onPress}
         activeOpacity={.8}
         style={[styles.wrapper, {
           backgroundColor: type === 'google' ? '#1976D2' : '#4D6FA9'
