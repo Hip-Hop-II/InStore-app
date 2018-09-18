@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from 'axios'
 
 const BASE_URL = `https://www.googleapis.com/userinfo/v2/me`
 
@@ -12,10 +12,10 @@ export const authAsync = async token => {
     if (res.status === 200) {
       return res.data
     }
-    throw new Error("No success with Facebook")
+    throw new Error('No success with Facebook')
   } catch (error) {
     throw error
   }
-};
+}
 
 export const Google = { authAsync }

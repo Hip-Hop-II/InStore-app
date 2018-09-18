@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 
-const JWT_SECRET = "hello world"
+const JWT_SECRET = 'hello world'
 
 const JWT_OPTION = {
-  issuer: "InStore"
-};
+  issuer: 'InStore'
+}
 
 const createToken = (user) => {
   if (!user && !user._id) {
@@ -16,8 +16,7 @@ const createToken = (user) => {
 }
 
 const verifyToken = (token) => {
-  console.log(token, "=======================", JWT_SECRET);
-  return jwt.verify(token, JWT_SECRET. JWT_OPTION)
+  return jwt.verify(token, JWT_SECRET, JWT_OPTION)
 }
 
 const getTokenFromHeaders = req => {
@@ -27,7 +26,6 @@ const getTokenFromHeaders = req => {
     const [bearer, ...newToken] = token.split(' ')
     if (bearer === 'Bearer' && newToken[0]) {
       try {
-        console.log('cccccccc')
         return verifyToken(newToken[0])
       } catch (error) {
         console.log(error)

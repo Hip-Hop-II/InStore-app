@@ -1,14 +1,12 @@
 import {Router} from 'express'
 
-import {create} from './customer.controller'
+import {create, getUserInfo} from './customer.controller'
 
 import {customerAuth} from './customer'
 
 const routes = Router()
 
 routes.post('/', create)
-routes.get("/test", customerAuth, (req, res) => {
-  res.send('this is a test')
-})
+routes.get('/me', customerAuth, getUserInfo)
 
 export default routes

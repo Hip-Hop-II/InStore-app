@@ -51,3 +51,16 @@ export const getOrCreateCustomer = async (data, providerName) => {
     throw error
   }
 }
+
+export const me = async userId => {
+  try {
+    const user = await Customer.findById(userId)
+
+    if (!user) {
+      throw new Error('User not exist')
+    }
+    return user
+  } catch (error) {
+    throw error
+  }
+}
