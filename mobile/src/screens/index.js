@@ -1,5 +1,17 @@
 import {createStackNavigator, createSwitchNavigator, createBottomTabNavigator} from 'react-navigation'
 import React from 'react'
+import TabBar from '../components/tabbar/TabBar'
+import { colors } from '../utils/colors'
+
+const primaryHeader = {
+  headerStyle: {
+    backgroundColor: colors.green
+  },
+  headerTintColor: colors.white,
+  headerTitleStyle: {
+    fontWeight: '400'
+  }
+}
 
 const AuthNavigator = createStackNavigator({
   Login: {
@@ -11,14 +23,38 @@ const AuthNavigator = createStackNavigator({
   }
 })
 
-const TabNavigator = createBottomTabNavigator({
+const HomeStack = createStackNavigator({
   Home: {
-    getScreen: () => require('./HomeScreen').default
+    getScreen: () => require("./HomeScreen").default
+  },
+  Category: {
+    getScreen: () => require('./CategoryScreen').default
   }
+}, {
+  navigationOptions: {...primaryHeader}
+})
+
+const TabNavigator = createBottomTabNavigator({
+  Home: HomeStack,
+  List: {
+    getScreen: () => require('./ListScreen').default
+  },
+  Stores: {
+    getScreen: () => require('./StoresScreen').default
+  },
+  Order: {
+    getScreen: () => require('./OrderScreen').default
+  }
+}, {
+  tabBarComponent: props => <TabBar {...props} />
 })
 
 const MainNavigator = createStackNavigator({
   Tab: TabNavigator
+}, {
+  navigationOptions: {
+    header: null
+  }
 })
 
 const AppNavigator = createSwitchNavigator({
@@ -28,7 +64,7 @@ const AppNavigator = createSwitchNavigator({
   Auth: AuthNavigator,
   Main: MainNavigator
 }, {
-  initialRouteName: 'Splash'
+  initialRouteName: 'Main'
 })
 
 class Navigation extends React.Component {
