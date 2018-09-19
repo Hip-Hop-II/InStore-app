@@ -5,6 +5,8 @@ import {View, ActivityIndicator, StyleSheet} from 'react-native'
 import {images} from './src/utils/images'
 import {cacheImages} from './src/utils/cacheImages'
 import {NavigationService} from './src/api/NavigationService'
+import {Provider} from 'react-redux'
+import store from './src/redux/store'
 
 export default class App extends React.Component {
   state = {
@@ -34,7 +36,9 @@ export default class App extends React.Component {
       )
     }
     return (
-      <Navigation ref={r => NavigationService.setTopLevelNavigator(r)} />
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
     )
   }
 }

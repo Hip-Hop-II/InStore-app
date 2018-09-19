@@ -12,10 +12,18 @@ import Proptypes from 'prop-types'
 import { productImgs } from '../utils/images'
 import {colors} from '../utils/colors'
 import {Feather} from '@expo/vector-icons'
+import { connect } from 'react-redux'
+import {addProduct, removeProduct} from '../redux/actions/product'
 
 const DUCTING_TIME = 200
 
-export default class ProductCard extends PureComponent {
+class ProductCard extends PureComponent {
+  static propTypes = {
+    name: Proptypes.string,
+    kgPrice: Proptypes.number,
+    unityPrice: Proptypes.number,
+    imageUrl: Proptypes.any
+  }
   state = {
     isHover: false,
     qty: 1,
@@ -50,60 +58,70 @@ export default class ProductCard extends PureComponent {
 
   }
   handlePlusPress = () => {
+    const {id} = this.props
     this.fadeIn()
     this.setState({isHover: true})
+    this.props.addProduct(id, this.state.qty)
   }
 
   handleInc = () => {
+    const {id} = this.props
     this.setState(s => ({
       qty: s.qty + 1
     }))
+    this.props.addProduct(id, this.state.qty + 1)
   }
   handleDec = () => {
+    const {id} = this.props
     this.setState(s => ({
       qty: s.qty - 1
     }))
+    this.props.removeProduct(id, this.state.qty - 1)
   }
-  handleClose = () => {
+  handleClose = (type) => {
     this.fadeOut()
     this.setState({
       isHover: false
     })
+    type === 'clean' && this.props.removeProduct(this.props.id, this.state.qty - 1)
   }
   render() {
     const { isHover, qty, cardOpacity} = this.state
+    const {name, imageUrl, kgPrice, unityPrice} = this.props
     return (
         <View style={styles.wrapper}>
           <TouchableWithoutFeedback onPress={this.handleClose}>
           <Animated.View style={{opacity: cardOpacity}}>
             <View style={styles.imageWrapper}>
-              <Image source={productImgs.apple} 
+              <Image source={imageUrl} 
               resizeMode="contain"
               style={styles.img} />
             </View>
             <View style={styles.footer}>
-              <Text style={{fontSize: 18}}> $1.19 each </Text>
-              <Text style={{fontSize: 14}}> Red Apple </Text>
-              <Text style={{fontSize: 14}}> At $10.12/kg </Text>
+              <Text style={{fontSize: 18}}> ${unityPrice} each </Text>
+              <Text style={{fontSize: 14}}> {name} </Text>
+              <Text style={{fontSize: 14}}> At ${kgPrice}/kg </Text>
             </View>
             <TouchableOpacity
             onPress={this.handlePlusPress}
             activeOpacity={.7} style={styles.plusWrapper}>
-              <View style={styles.plusContent}>
-              <Feather name="plus" size={15} color={colors.green} />
+              <View style={[styles.plusContent, {backgroundColor: qty > 1 ? colors.green : colors.white}]}>
+                {qty > 1 ? <Text style={{color: '#fff'}}>{qty}</Text> :
+                <Feather name="plus" size={15} color={colors.green} />
+              }
               </View>
             </TouchableOpacity>
           </Animated.View>
         </TouchableWithoutFeedback>
           {isHover && (
             <View style={styles.plusNumberWrapper}>
-              <Animated.View style={styles.plusButton}>
+              <Animated.View style={[styles.plusButton]}>
                 {qty > 1 ? (
                 <TouchableOpacity activeOpacity={.7} onPress={this.handleDec}>
                   <Feather name="minus" color={colors.green} size={20} />
                 </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity activeOpacity={.7} onPress={this.handleClose}>
+                  <TouchableOpacity activeOpacity={.7} onPress={() => this.handleClose('clean')}>
                     <Feather name="trash-2" color={colors.green} size={20} />
                   </TouchableOpacity>
                 )}
@@ -145,6 +163,8 @@ const styles = StyleSheet.create({
     right: 5
   },
   plusContent: {
+    width: 25,
+    height: 25,
     borderRadius: 25,
     borderColor: colors.green,
     borderWidth: 1,
@@ -173,4 +193,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 6
   }
-});
+})
+
+export default connect(undefined, {addProduct, removeProduct})(ProductCard)

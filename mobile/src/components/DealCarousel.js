@@ -78,6 +78,7 @@ export default class DealCarousel extends PureComponent {
         pagingEnabled
         ref={this.scrollView}
         onScroll={this.onScroll}
+        scrollEventThrottle={16}
         >
           {images.map((img, index) => (
             <Image source={img} key={index} />

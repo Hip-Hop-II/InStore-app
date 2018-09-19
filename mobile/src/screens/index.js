@@ -2,6 +2,13 @@ import {createStackNavigator, createSwitchNavigator, createBottomTabNavigator} f
 import React from 'react'
 import TabBar from '../components/tabbar/TabBar'
 import { colors } from '../utils/colors'
+import {connect} from 'react-redux'
+import ShoppingCardIcon from '../components/ShoppingCardIcon'
+
+import {
+  reduxifyNavigator,
+  createReactNavigationReduxMiddleware
+} from 'react-navigation-redux-helpers'
 
 const primaryHeader = {
   headerStyle: {
@@ -31,7 +38,7 @@ const HomeStack = createStackNavigator({
     getScreen: () => require('./CategoryScreen').default
   }
 }, {
-  navigationOptions: {...primaryHeader}
+  navigationOptions: {...primaryHeader, headerRight: <ShoppingCardIcon />}
 })
 
 const TabNavigator = createBottomTabNavigator({
@@ -56,8 +63,9 @@ const MainNavigator = createStackNavigator({
     header: null
   }
 })
+export const NavigationMiddleware = createReactNavigationReduxMiddleware('root', state => state.nav)
 
-const AppNavigator = createSwitchNavigator({
+export const AppNavigator = createSwitchNavigator({
   Splash: {
     getScreen: () => require('./SplashScreen').default
   },
@@ -67,12 +75,10 @@ const AppNavigator = createSwitchNavigator({
   initialRouteName: 'Main'
 })
 
-class Navigation extends React.Component {
-  render () {
-    return (
-      <AppNavigator />
-    )
-  }
-}
+const Navigation = reduxifyNavigator(AppNavigator, 'root')
 
-export default Navigation
+const mapStateToProps = (state) => ({
+  state: state.nav
+})
+
+export default connect(mapStateToProps)(Navigation)
