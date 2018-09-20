@@ -33,7 +33,6 @@ class CategoryScreen extends PureComponent {
   }
   
   render() {
-    console.log(this.props)
     return (
       <View style={styles.wrapper}>
         {this.props.products.map((product, i) => (

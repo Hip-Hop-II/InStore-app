@@ -1,4 +1,11 @@
-export const productInfo = (state = {products: [], addProducts: []}, action) => {
+
+const calcTotalPrice = (arr = []) => {
+  debugger
+  const total = arr.map(el => el.num * el.unityPrice).reduce((a, b) => a + b, 0)
+  return total
+}
+
+export const productInfo = (state = {products: [], addProducts: [], totalPrice: 0}, action) => {
   switch (action.type) {
     case 'RECEIVE_PRODUCTS':
       return {
@@ -12,38 +19,42 @@ export const productInfo = (state = {products: [], addProducts: []}, action) => 
         const newProduct = state.products.find(item => item.id === action.id)
         return {
           ...state,
-          addProducts: state.addProducts.concat({...newProduct, num: action.num})
+          addProducts: state.addProducts.concat({...newProduct, num: action.num}),
+          totalPrice: calcTotalPrice(state.addProducts.concat({ ...newProduct, num: action.num }))
         }
       } else {
-        debugger
+        news = state.addProducts.map(produ => {
+          if (produ.id === action.id) {
+            return { ...produ, num: action.num }
+          }
+          return produ
+        })
         return {
           ...state,
-          addProducts: state.addProducts.map(produ => {
-            if (produ.id === action.id) {
-              return {...produ, num: action.num}
-            }
-            return produ
-          })
+          addProducts: news,
+          totalPrice: calcTotalPrice(news)
         }
       }
-      console.log(arr)
       return arr
       case 'REMOVE_PRODUCT':
         const exisIndex = state.addProducts.findIndex(prod => prod.id === action.id)
         if (action.num === 0) {
           return {
             ...state,
-            addProducts: [...state.addProducts.slice(0, exisIndex), ...state.addProducts.slice(exisIndex + 1)]
+            addProducts: [...state.addProducts.slice(0, exisIndex), ...state.addProducts.slice(exisIndex + 1)],
+            totalPrice: calcTotalPrice([...state.addProducts.slice(0, exisIndex), ...state.addProducts.slice(exisIndex + 1)])
           }
         } else {
+          newP = state.addProducts.map(produ => {
+            if (produ.id === action.id) {
+              return { ...produ, num: action.num }
+            }
+            return produ
+          })
           return {
             ...state,
-            addProducts: state.addProducts.map(produ => {
-              if (produ.id === action.id) {
-                return {...produ, num: action.num}
-              }
-              return produ
-            })
+            addProducts: newP,
+            totalPrice: calcTotalPrice(newP)
           }
         }
       default:

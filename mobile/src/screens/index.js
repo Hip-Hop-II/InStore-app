@@ -30,16 +30,33 @@ const AuthNavigator = createStackNavigator({
   }
 })
 
+const ShoppingCardNavigator = createStackNavigator({
+  ShoppingCard: {
+    getScreen: () => require("./ShoppingCardScreen").default,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: colors.white
+      }
+    }
+  }
+});
+
 const HomeStack = createStackNavigator({
   Home: {
     getScreen: () => require("./HomeScreen").default
   },
   Category: {
     getScreen: () => require('./CategoryScreen').default
+  },
+  Shopping: {
+    screen: ShoppingCardNavigator,
+    navigationOptions: {
+      header: null
+    }
   }
 }, {
-  navigationOptions: {...primaryHeader, headerRight: <ShoppingCardIcon />}
-})
+    navigationOptions: ({ navigation }) => ({...primaryHeader, headerRight: <ShoppingCardIcon navigation={navigation} /> })
+  })
 
 const TabNavigator = createBottomTabNavigator({
   Home: HomeStack,

@@ -4,6 +4,9 @@ import { images } from '../utils/images'
 import {connect} from 'react-redux'
 
 class ShoppingCardIcon extends PureComponent {
+  handlePress = () => {
+    this.props.navigation.navigate('Shopping')
+  }
   render() {
     const {addProducts} = this.props
     return (
