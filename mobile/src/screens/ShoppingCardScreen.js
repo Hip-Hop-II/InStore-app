@@ -3,11 +3,18 @@ import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import {connect} from 'react-redux'
 import CartItem from '../components/CartItem'
 import { colors } from '../utils/colors'
+import CloseButton from '../components/buttons/CloseButton'
+import {removeProduct} from '../redux/actions/product'
 
 class ShoppingCardScreen extends PureComponent {
-  static navigationOptions = ({navigaiton}) => ({
-    title: 'My Cart'
+  static navigationOptions = ({navigation}) => ({
+    title: 'My Cart',
+    headerLeft: <CloseButton style={{marginLeft: 10}} size={26} onPress={() => navigation.goBack(null)} />
   })
+
+  handleCartRemove = id => {
+    this.props.removeProduct(id, 0)
+  }
 
   renderList = () => {
     const {addProducts} = this.props
@@ -30,7 +37,7 @@ class ShoppingCardScreen extends PureComponent {
   }
   renderItem = ({item}) => {
     return (
-      <CartItem {...item} />
+      <CartItem {...item} handleRemove={this.handleCartRemove} />
     )
   }
 
@@ -99,4 +106,4 @@ const styles = StyleSheet.create({
 export default connect(state => ({
   addProducts: state.productInfo.addProducts,
   totalPrice: state.productInfo.totalPrice
-}))(ShoppingCardScreen);
+}), {removeProduct})(ShoppingCardScreen);

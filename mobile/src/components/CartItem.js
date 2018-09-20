@@ -9,7 +9,7 @@ export default class CartItem extends PureComponent {
 
   }
   removePress = () => {
-
+    this.props.handleRemove(this.props.id)
   }
   render() {
     const {imageUrl, num, name, kgPrice, unityPrice} = this.props
