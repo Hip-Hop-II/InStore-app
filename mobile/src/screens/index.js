@@ -4,6 +4,7 @@ import TabBar from '../components/tabbar/TabBar'
 import { colors } from '../utils/colors'
 import {connect} from 'react-redux'
 import ShoppingCardIcon from '../components/ShoppingCardIcon'
+import ProfileButton from '../components/buttons/ProfileButton'
 
 import {
   reduxifyNavigator,
@@ -41,22 +42,35 @@ const ShoppingCardNavigator = createStackNavigator({
   }
 });
 
-const HomeStack = createStackNavigator({
-  Home: {
-    getScreen: () => require("./HomeScreen").default
-  },
-  Category: {
-    getScreen: () => require('./CategoryScreen').default
-  },
-  Shopping: {
-    screen: ShoppingCardNavigator,
-    navigationOptions: {
-      header: null
-    }
+const ProfileStack = createStackNavigator({
+  Profile: {
+    getScreen: () => require('./ProfileScreen').default
   }
-}, {
-    navigationOptions: ({ navigation }) => ({...primaryHeader, headerRight: <ShoppingCardIcon navigation={navigation} /> })
-  })
+})
+
+const HomeStack = createStackNavigator(
+  {
+    Home: {
+      getScreen: () => require("./HomeScreen").default
+    },
+    Category: {
+      getScreen: () => require("./CategoryScreen").default
+    },
+    Shopping: {
+      screen: ShoppingCardNavigator,
+      navigationOptions: {
+        header: null
+      }
+    }
+  },
+  {
+    navigationOptions: ({ navigation }) => ({
+      ...primaryHeader,
+      headerLeft: <ProfileButton navigation={navigation} />,
+      headerRight: <ShoppingCardIcon navigation={navigation} />
+    })
+  }
+);
 
 const TabNavigator = createBottomTabNavigator({
   Home: HomeStack,
@@ -74,7 +88,8 @@ const TabNavigator = createBottomTabNavigator({
 })
 
 const MainNavigator = createStackNavigator({
-  Tab: TabNavigator
+  Tab: TabNavigator,
+  Profile: ProfileStack
 }, {
   navigationOptions: {
     header: null
