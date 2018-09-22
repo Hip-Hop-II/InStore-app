@@ -45,6 +45,29 @@ const ShoppingCardNavigator = createStackNavigator({
 const ProfileStack = createStackNavigator({
   Profile: {
     getScreen: () => require('./ProfileScreen').default
+  },
+  Settings: {
+    getScreen: () => require('./SettingScreen').default
+  },
+  Addresses: {
+    getScreen: () => require('./AddressScreen').default
+  },
+  AddressForm: {
+    getScreen: () => require('./AddressFormScreen').default
+  },
+  Autocomplete: {
+    getScreen: () => require('./AutocompleteAddressScreen').default
+  }
+}, {
+  navigationOptions: {
+    headerBackTitle: null,
+    headerTintColor: colors.green,
+    headerStyle: {
+      backgroundColor: colors.white
+    },
+    headerTitleStyle: {
+      color: colors.black
+    }
   }
 })
 
@@ -91,6 +114,7 @@ const MainNavigator = createStackNavigator({
   Tab: TabNavigator,
   Profile: ProfileStack
 }, {
+  initialRouteName: 'Profile',
   navigationOptions: {
     header: null
   }

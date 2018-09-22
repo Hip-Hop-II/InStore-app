@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native'
 import CloseButton from "../components/buttons/CloseButton"
 import ListColumn  from '../components/ListColumn'
 import {MaterialIcons, EvilIcons, Feather, Ionicons} from '@expo/vector-icons'
@@ -41,12 +41,27 @@ export default class ProfileScreen extends PureComponent {
     style={{marginLeft: 10}} size={26}
     onPress={() => navigation.goBack(null)} />
   })
+  ListonPress = (link) => {
+    this.props.navigation.navigate(link)
+  }
   render() {
     return (
       <View style={styles.wrapper}>
         <ScrollView>
+          <ListColumn style={{marginTop: 10}}> 
+            <ListColumn.Left>
+              <Text style={styles.username}>
+                Hi,Antony
+              </Text>
+            </ListColumn.Left>
+            <ListColumn.Right>
+              <View style={styles.avotar}>
+                
+              </View>
+            </ListColumn.Right>
+          </ListColumn>
           {LINKS.map((item, index) => (
-            <ListColumn key={index} link>
+            <ListColumn key={index} link onPress={() => this.ListonPress(item.link)}>
               <ListColumn.Left>
                 <View style={styles.leftWrapper}>
                   <View style={styles.leftIcon}>
@@ -82,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   leftIcon: {
-    flex: 0.2
+    flex: 0.1
   },
   titleWrapper: {
     flex: 1
@@ -105,5 +120,15 @@ const styles = StyleSheet.create({
   logoutText: {
     color: colors.green,
     fontWeight: 'bold'
+  },
+  username: {
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  avotar: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    backgroundColor: colors.green
   }
 });

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import {colors} from '../utils/colors'
+import PropTypes from 'prop-types'
 
 const Left = ({children}) => (
   <View style={styles.leftWrapper}>
@@ -15,6 +16,10 @@ const Right = ({children}) => (
 )
 
 export default class ListColumn extends PureComponent {
+  static propTypes = {
+    link: PropTypes.bool,
+    onPress: PropTypes.func
+  }
   static Left = Left
   static Right = Right
 
@@ -24,9 +29,10 @@ export default class ListColumn extends PureComponent {
     </View>
   )
   render() {
+    const {onPress} = this.props
     if (this.props.link) {
       return (
-        <TouchableOpacity activeOpacity={.7}>
+        <TouchableOpacity activeOpacity={.7} onPress={onPress}>
           {this.renderContent()}
         </TouchableOpacity>
       )
